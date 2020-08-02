@@ -145,16 +145,15 @@ namespace VrSharp.Svr
             this.pixelFormat = pixelFormat;
             pixelCodec = SvrPixelCodec.GetPixelCodec(pixelFormat);
 
-            this.dataFormat = dataFormat;
-            dataCodec = SvrDataCodec.GetDataCodec(dataFormat);
-
-            // Make sure the pixel and data codecs exists and we can encode to it
-            if (pixelCodec == null || !pixelCodec.CanEncode) return false;
-            if (dataCodec == null || !dataCodec.CanEncode) return false;
-            dataCodec.PixelCodec = pixelCodec;
-
-            // Set the correct data format (it's ok to do it after getting the codecs).
-            if (dataFormat == SvrDataFormat.Index4Rgb5a3Rectangle || dataFormat == SvrDataFormat.Index4Rgb5a3Square ||
+            // Set the correct data format
+            if (dataFormat == SvrDataFormat.Rectangle || dataFormat == SvrDataFormat.Square)
+            {
+                if (textureWidth == textureHeight)
+                    dataFormat = SvrDataFormat.Square;
+                else
+                    dataFormat = SvrDataFormat.Rectangle;
+            }
+            else if (dataFormat == SvrDataFormat.Index4Rgb5a3Rectangle || dataFormat == SvrDataFormat.Index4Rgb5a3Square ||
                 dataFormat == SvrDataFormat.Index4Argb8Rectangle || dataFormat == SvrDataFormat.Index4Argb8Square)
             {
                 if (textureWidth == textureHeight) // Square texture
@@ -207,6 +206,13 @@ namespace VrSharp.Svr
                     }
                 }
             }
+            this.dataFormat = dataFormat;
+            dataCodec = SvrDataCodec.GetDataCodec(dataFormat);
+
+            // Make sure the pixel and data codecs exists and we can encode to it
+            if (pixelCodec == null || !pixelCodec.CanEncode) return false;
+            if (dataCodec == null || !dataCodec.CanEncode) return false;
+            dataCodec.PixelCodec = pixelCodec;
 
             if (dataCodec.PaletteEntries != 0)
             {

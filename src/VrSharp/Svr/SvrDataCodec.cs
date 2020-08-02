@@ -444,6 +444,7 @@ namespace VrSharp.Svr
             switch (format)
             {
                 case SvrDataFormat.Rectangle:
+                case SvrDataFormat.Square:
                     return new Rectangle();
                 case SvrDataFormat.Index4ExternalPalette:
                     return new Index4ExtClut();

@@ -14,6 +14,7 @@ namespace VrSharp.Svr
     public enum SvrDataFormat : byte
     {
         Rectangle             = 0x60,
+        Square                = 0x61,
         Index4ExternalPalette = 0x62,
         Index8ExternalPalette = 0x64,
         Index4Rgb5a3Rectangle = 0x66,
